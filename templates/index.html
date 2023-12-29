@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <!--Page Title-->
+    <title>Image Generator</title>
+
+    <!--Meta Keywords and Description-->
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+    <!--Favicon-->
+    <link rel="shortcut icon" href="/static/images/favicon.ico" title="Favicon" />
+
+    <!-- Main CSS Files -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- Color CSS -->
+    <link rel="stylesheet" href="/static/css/color.css">
+
+    <!--Icon Fonts - Font Awesome Icons-->
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0//static/css/all.min.css">
+    <!-- Animate CSS-->
+    <link href="/static/css/animate.css" rel="stylesheet" type="text/css">
+
+    <!--Google Webfonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <style>
+        body {
+            margin: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 95vh;
+            background-color: #F0F0F0;
+            overflow-y: hidden;
+        }
+        
+        .animated-border {
+            position: relative;
+            width: 100%;
+            /* Set your desired width */
+            height: 100%;
+            /* Set your desired height */
+            border-radius: 20px;
+            /* Set your desired border radius */
+            overflow: hidden;
+        }
+        
+        .inner-fill {
+            position: absolute;
+            top: 6px;
+            /* Adjust based on borderWidth */
+            left: 6px;
+            /* Adjust based on borderWidth */
+            right: 6px;
+            /* Adjust based on borderWidth */
+            bottom: 6px;
+            /* Adjust based on borderWidth */
+            background-image: url('/static/images/bg.jpg');
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Set your desired image path */
+            background-size: cover;
+            /* Adjust based on how you want the image to be displayed */
+            border-radius: 14px;
+            /* Adjust based on radius and borderWidth */
+        }
+        
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(45deg, #6019FA 0%, #EDEDED 100%);
+            background-size: 200% 200%;
+            animation: moveGradient 4s linear infinite;
+        }
+        
+        @keyframes moveGradient {
+            0% {
+                background-position: 0% 0%;
+            }
+            25% {
+                background-position: 100% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            75% {
+                background-position: 0% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+            75% {
+                background-position: 0% 100%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            25% {
+                background-position: 100% 0%;
+            }
+            0% {
+                background-position: 0% 0%;
+            }
+        }
+        
+        .avatar {
+            height: 10vh;
+            width: 10vw;
+        }
+        
+        #generated-image-container {
+            border-radius: 25px;
+            max-width: 100%;
+            /* Ensure the image doesn't exceed the container width */
+            height: auto;
+            /* Allow the height to adjust proportionally */
+            display: block;
+            /* Ensure it's a block element to take up the full width */
+        }
+        
+        #generated-image-container img {
+            width: 250px;
+            height: 250px;
+            padding: 10px;
+        }
+        
+        .loaderx {
+            width: 6em;
+            height: 6em;
+        }
+        
+        .loader-ring {
+            animation: ringA 2s linear infinite;
+        }
+        
+        .loader-ring-a {
+            stroke: #9708F4;
+        }
+        
+        .loader-ring-b {
+            animation-name: ringB;
+            stroke: #5E14E4;
+        }
+        
+        .loader-ring-c {
+            animation-name: ringC;
+            stroke: #9708F4;
+        }
+        
+        .loader-ring-d {
+            animation-name: ringD;
+            stroke: #5E14E4;
+        }
+        /* Animations */
+        
+        @keyframes ringA {
+            from,
+            4% {
+                stroke-dasharray: 0 660;
+                stroke-width: 20;
+                stroke-dashoffset: -330;
+            }
+            12% {
+                stroke-dasharray: 60 600;
+                stroke-width: 30;
+                stroke-dashoffset: -335;
+            }
+            32% {
+                stroke-dasharray: 60 600;
+                stroke-width: 30;
+                stroke-dashoffset: -595;
+            }
+            40%,
+            54% {
+                stroke-dasharray: 0 660;
+                stroke-width: 20;
+                stroke-dashoffset: -660;
+            }
+            62% {
+                stroke-dasharray: 60 600;
+                stroke-width: 30;
+                stroke-dashoffset: -665;
+            }
+            82% {
+                stroke-dasharray: 60 600;
+                stroke-width: 30;
+                stroke-dashoffset: -925;
+            }
+            90%,
+            to {
+                stroke-dasharray: 0 660;
+                stroke-width: 20;
+                stroke-dashoffset: -990;
+            }
+        }
+        
+        @keyframes ringB {
+            from,
+            12% {
+                stroke-dasharray: 0 220;
+                stroke-width: 20;
+                stroke-dashoffset: -110;
+            }
+            20% {
+                stroke-dasharray: 20 200;
+                stroke-width: 30;
+                stroke-dashoffset: -115;
+            }
+            40% {
+                stroke-dasharray: 20 200;
+                stroke-width: 30;
+                stroke-dashoffset: -195;
+            }
+            48%,
+            62% {
+                stroke-dasharray: 0 220;
+                stroke-width: 20;
+                stroke-dashoffset: -220;
+            }
+            70% {
+                stroke-dasharray: 20 200;
+                stroke-width: 30;
+                stroke-dashoffset: -225;
+            }
+            90% {
+                stroke-dasharray: 20 200;
+                stroke-width: 30;
+                stroke-dashoffset: -305;
+            }
+            98%,
+            to {
+                stroke-dasharray: 0 220;
+                stroke-width: 20;
+                stroke-dashoffset: -330;
+            }
+        }
+        
+        @keyframes ringC {
+            from {
+                stroke-dasharray: 0 440;
+                stroke-width: 20;
+                stroke-dashoffset: 0;
+            }
+            8% {
+                stroke-dasharray: 40 400;
+                stroke-width: 30;
+                stroke-dashoffset: -5;
+            }
+            28% {
+                stroke-dasharray: 40 400;
+                stroke-width: 30;
+                stroke-dashoffset: -175;
+            }
+            36%,
+            58% {
+                stroke-dasharray: 0 440;
+                stroke-width: 20;
+                stroke-dashoffset: -220;
+            }
+            66% {
+                stroke-dasharray: 40 400;
+                stroke-width: 30;
+                stroke-dashoffset: -225;
+            }
+            86% {
+                stroke-dasharray: 40 400;
+                stroke-width: 30;
+                stroke-dashoffset: -395;
+            }
+            94%,
+            to {
+                stroke-dasharray: 0 440;
+                stroke-width: 20;
+                stroke-dashoffset: -440;
+            }
+        }
+        
+        @keyframes ringD {
+            from,
+            8% {
+                stroke-dasharray: 0 440;
+                stroke-width: 20;
+                stroke-dashoffset: 0;
+            }
+            16% {
+                stroke-dasharray: 40 400;
+                stroke-width: 30;
+                stroke-dashoffset: -5;
+            }
+            36% {
+                stroke-dasharray: 40 400;
+                stroke-width: 30;
+                stroke-dashoffset: -175;
+            }
+            44%,
+            50% {
+                stroke-dasharray: 0 440;
+                stroke-width: 20;
+                stroke-dashoffset: -220;
+            }
+            58% {
+                stroke-dasharray: 40 400;
+                stroke-width: 30;
+                stroke-dashoffset: -225;
+            }
+            78% {
+                stroke-dasharray: 40 400;
+                stroke-width: 30;
+                stroke-dashoffset: -395;
+            }
+            86%,
+            to {
+                stroke-dasharray: 0 440;
+                stroke-width: 20;
+                stroke-dashoffset: -440;
+            }
+        }
+        
+        .disabled-button {
+            background-color: #ccc;
+            /* Set your desired grey color */
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="animated-border">
+        <div class="gradient-overlay" id="gradientOverlay"></div>
+        <div class="inner-fill">
+            <div id="wrapper">
+
+                <header id="banner" class="scrollto clearfix" data-enllax-ratio=".5">
+                    <div id="header" class="nav-collapse">
+                        <div class="row clearfix">
+                            <div class="col-1">
+
+                                <div id="nav-trigger"><span></span></div>
+                                <nav id="nav-mobile"></nav>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Banner Content -->
+                    <div id="banner-content" class="row clearfix">
+                        <!-- Left column -->
+                        <h1>
+                        </h1>
+                        <div class="col-lg-3 wow bounceInUp" data-wow-offset="2" data-wow-duration="1.5s" data-wow-delay="0.2s">
+                            <h1>Welcome to the <span class="easytext">FIFA Player Avatar</span> Generator!</h1>
+                            <h2>Our cutting-edge graphics ensure that your FIFA player avatar looks as lifelike as possible, bringing an unparalleled level of realism to your virtual soccer experience.</h2>
+                        </div>
+                        <!-- right (wider) -->
+                        <div class="col-lg-6">
+                            <div class="uploadbuttons wow bounceInUp" data-wow-offset="5" data-wow-duration="1.5s" data-wow-delay="0.4s">
+                                <form id="generate-form" action="/generate" method="POST">
+                                    <div class="container">
+                                        <div class="drag-area" id="container">
+                                            <div id="generated-image-container">
+                                                {% if success %}
+                                                <img src="data:image/png;base64,{{ generated_image }}" alt="Generated Image"> {% endif %}
+                                            </div>
+                                            <div class="icon" id="icon-container">
+                                                <img src="/static/images/avatar.gif">
+                                            </div>
+                                            <div id="loader" style="display: none;"><svg class="loaderx" width="240" height="240" viewBox="0 0 240 240">
+                                                <circle class="loader-ring loader-ring-a" cx="120" cy="120" r="105" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
+                                                <circle class="loader-ring loader-ring-b" cx="120" cy="120" r="35" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
+                                                <circle class="loader-ring loader-ring-c" cx="85" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+                                                <circle class="loader-ring loader-ring-d" cx="155" cy="120" r="70" fill="none" stroke="#000" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+                                            </svg></div>
+                                            <p id="instructions">ⓘ Click the button to generate your FiFa Player Avatar. Generated images will show here.</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="buttondiv">
+                                        <button class="uploadbutton wow bounceInUp" data-wow-offset="3" data-wow-duration="1.5s" data-wow-delay="0.5s" type="submit" value="Upload" onclick="handleGenerateClick()">Generate
+                        <div class="star-1">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" version="1.1" xml:space="preserve"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                  <linearGradient id="myGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#9400D3" /> <!-- Dark Violet -->
+                                    <stop offset="100%" style="stop-color:#8A2BE2" /> <!-- Blue Violet -->
+                                </linearGradient>
+                                
+                                </defs>
+                                <g id="Layer_x0020_1">
+                                  <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                  <!-- Apply the gradient to the fill attribute of the path -->
+                                  <path d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z" class="fil0" fill="url(#myGradient)"></path>
+                                </g>
+                              </svg>
+                        </div>
+                        <div class="star-2">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" version="1.1" xml:space="preserve"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                  <linearGradient id="myGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#9400D3" /> <!-- Dark Violet -->
+                                    <stop offset="100%" style="stop-color:#8A2BE2" /> <!-- Blue Violet -->
+                                </linearGradient>
+                                
+                                </defs>
+                                <g id="Layer_x0020_1">
+                                  <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                  <!-- Apply the gradient to the fill attribute of the path -->
+                                  <path d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z" class="fil0" fill="url(#myGradient)"></path>
+                                </g>
+                              </svg>
+                        </div>
+                        <div class="star-3">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" version="1.1" xml:space="preserve"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                  <linearGradient id="myGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#9400D3" /> <!-- Dark Violet -->
+                                    <stop offset="100%" style="stop-color:#8A2BE2" /> <!-- Blue Violet -->
+                                </linearGradient>
+                                
+                                </defs>
+                                <g id="Layer_x0020_1">
+                                  <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                  <!-- Apply the gradient to the fill attribute of the path -->
+                                  <path d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z" class="fil0" fill="url(#myGradient)"></path>
+                                </g>
+                              </svg>
+                        </div>
+                        <div class="star-4">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" version="1.1" xml:space="preserve"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                  <linearGradient id="myGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#9400D3" /> <!-- Dark Violet -->
+                                    <stop offset="100%" style="stop-color:#8A2BE2" /> <!-- Blue Violet -->
+                                </linearGradient>
+                                
+                                </defs>
+                                <g id="Layer_x0020_1">
+                                  <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                  <!-- Apply the gradient to the fill attribute of the path -->
+                                  <path d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z" class="fil0" fill="url(#myGradient)"></path>
+                                </g>
+                              </svg>
+                        </div>
+                        
+                        <div class="star-5">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" version="1.1" xml:space="preserve"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                  <linearGradient id="myGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#FFA07A" />
+                                    <stop offset="100%" style="stop-color:#FF6347" />
+                                  </linearGradient>
+                                </defs>
+                                <g id="Layer_x0020_1">
+                                  <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                  <!-- Apply the gradient to the fill attribute of the path -->
+                                  <path d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z" class="fil0" fill="url(#myGradient)"></path>
+                                </g>
+                              </svg>
+                        </div>
+                        <div class="star-6">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 784.11 815.53" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" version="1.1" xml:space="preserve"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                  <linearGradient id="myGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#FFA07A" />
+                                    <stop offset="100%" style="stop-color:#FF6347" />
+                                  </linearGradient>
+                                </defs>
+                                <g id="Layer_x0020_1">
+                                  <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+                                  <!-- Apply the gradient to the fill attribute of the path -->
+                                  <path d="M392.05 0c-20.9,210.08 -184.06,378.41 -392.05,407.78 207.96,29.37 371.12,197.68 392.05,407.74 20.93,-210.06 184.09,-378.37 392.05,-407.74 -207.98,-29.38 -371.16,-197.69 -392.06,-407.78z" class="fil0" fill="url(#myGradient)"></path>
+                                </g>
+                              </svg>
+                        
+                         </button>
+                                    </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--End of Row-->
+                </header>
+            </div>
+        </div>
+    </div>
+
+    <!-- index_ajax.html -->
+
+    <script>
+        function handleGenerateClick() {
+            // Get the generated image container
+            var generatedImageContainer = document.getElementById("generated-image-container");
+
+            // Get the generate button
+            var generateButton = document.querySelector(".uploadbutton");
+
+            // Disable the button and apply the disabled style
+            generateButton.disabled = true;
+            generateButton.classList.add("disabled-button");
+
+            // Hide the generated image
+            generatedImageContainer.style.display = "none";
+
+            // Hide icon and instructions
+            document.getElementById("icon-container").style.display = "none";
+            document.getElementById("instructions").style.display = "none";
+
+            // Display loader
+            document.getElementById("loader").style.display = "block";
+
+            // Make an AJAX request to update the generated image
+            fetch("/generate", {
+                    method: "POST",
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the generated image directly
+                        generatedImageContainer.innerHTML = '<img src="data:image/png;base64,' + data.generated_image + '" alt="Generated Image">';
+                    } else {
+                        // Handle error if needed
+                        console.error("Image generation failed");
+                    }
+
+                    // Hide loader after updating
+                    document.getElementById("loader").style.display = "none";
+
+                    // Show the generated image
+                    generatedImageContainer.style.display = "block";
+
+                    // Enable the button and remove the disabled style
+                    generateButton.disabled = false;
+                    generateButton.classList.remove("disabled-button");
+                })
+                .catch(error => {
+                    // Handle error if needed
+                    console.error("Error:", error);
+                    document.getElementById("loader").style.display = "none";
+
+                    // Show the generated image even in case of an error
+                    generatedImageContainer.style.display = "block";
+
+                    // Enable the button and remove the disabled style
+                    generateButton.disabled = false;
+                    generateButton.classList.remove("disabled-button");
+                });
+        }
+    </script>
+
+
+    <!-- Include JavaScript resources -->
+    <script src="/static/js/jquery.1.8.3.min.js"></script>
+    <script src="/static/js/wow.min.js"></script>
+    <script src="/static/js/featherlight.min.js"></script>
+    <script src="/static/js/featherlight.gallery.min.js"></script>
+    <script src="/static/js/jquery.enllax.min.js"></script>
+    <script src="/static/js/jquery.scrollUp.min.js"></script>
+    <script src="/static/js/jquery.easing.min.js"></script>
+    <script src="/static/static/js/jquery.stickyNavbar.min.js"></script>
+    <script src="/static/js/jquery.waypoints.min.js"></script>
+    <script src="/static/js/images-loaded.min.js"></script>
+    <script src="/static/js/lightbox.min.js"></script>
+    <script src="/static/js/site.js"></script>
+</body>
+
+
+</html>
